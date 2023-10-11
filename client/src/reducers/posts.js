@@ -3,7 +3,7 @@ export default (posts = [], action) => {
         return action.payload;
     }
     if (action.type === 'CREATE') {
-        return posts;
+        return [...posts, action.payload];
     }
     return posts;
 }
