@@ -9,6 +9,8 @@ import moment from 'moment';
 const Post = ({ post }) => {
     const classes = useStyles();
 
+    console.log(post.tags)
+
     return (
         <Card className={classes.card}>
             <CardMedia
@@ -23,7 +25,7 @@ const Post = ({ post }) => {
                 </Typography>
 
                 <Typography variant='body2'>
-                    {moment(post.creator).fromNow()}
+                    {moment(post.createdAt).fromNow()}
                 </Typography>
             </div>
 

@@ -21,7 +21,7 @@ const Form = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        dispatch(createPost(postData));
+        dispatch(createPost({ ...postData, tags: postData.tags.split(' ') }));
     }
 
     const clearForm = () => { }
@@ -71,7 +71,11 @@ const Form = () => {
                     label='Tags'
                     fullWidth
                     value={postData.tags}
-                    onChange={(event) => setPostData({ ...postData, tags: event.target.value })}
+                    placeholder='Separate tags with spaces'
+                    onChange={(event) => {
+                        const arr =
+                            setPostData({ ...postData, tags: event.target.value })
+                    }}
                 />
 
                 <div className={classes.fileInput}>
