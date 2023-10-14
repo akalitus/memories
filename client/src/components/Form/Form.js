@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useStyles from './styles';
 import { TextField, Button, Typography, Paper } from '@material-ui/core';
 import FileBase from 'react-file-base64';
-import { useDispatch } from 'react-redux';
-import { createPost } from '../../actions/posts';
+import { useDispatch, useSelector } from 'react-redux';
+import { createPost, updatePost } from '../../actions/posts';
 
-const Form = () => {
+const Form = ({ currentId, setCurrentId }) => {
     const classes = useStyles();
+    const post = useSelector((state) => currentId
+        ? state.posts.find((item) => item._id === currentId)
+        : null);
 
     const [postData, setPostData] = useState({
         creator: '',
@@ -18,13 +21,33 @@ const Form = () => {
 
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        if (post) setPostData({ ...post, tags: post.tags.join(' ') })
+    }, [post]);
+
+    const resetForm = () => {
+        setCurrentId(null);
+        setPostData({
+            creator: '',
+            title: '',
+            message: '',
+            tags: '',
+            selectedFile: ''
+        });
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        dispatch(createPost({ ...postData, tags: postData.tags.split(' ') }));
-    }
+        const tagsArr = postData.tags.split(' ');
 
-    const clearForm = () => { }
+        if (currentId) {
+            dispatch(updatePost(currentId, { ...postData, tags: tagsArr }));
+        } else {
+            dispatch(createPost({ ...postData, tags: tagsArr }));
+        }
+        resetForm();
+    }
 
     return (
         <Paper className={classes.paper}>
@@ -35,7 +58,9 @@ const Form = () => {
                 onSubmit={handleSubmit}
             >
                 <Typography variant='h6'>
-                    Creating a Memory
+                    {currentId ? 'Editing' : 'Creating'}
+                    {' '}
+                    a Memory
                 </Typography>
 
                 <TextField
@@ -98,7 +123,7 @@ const Form = () => {
                     variant='contained'
                     color='secondary'
                     size='small'
-                    onClick={clearForm}
+                    onClick={resetForm}
                     fullWidth
                 >
                     clear

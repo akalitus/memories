@@ -7,7 +7,7 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import moment from 'moment';
 import noImagePost from '../../assets/images/no-image-post.png';
 
-const Post = ({ post }) => {
+const Post = ({ post, setCurrentId }) => {
     const classes = useStyles();
 
     return (
@@ -32,7 +32,7 @@ const Post = ({ post }) => {
                 <Button
                     style={{ color: 'white' }}
                     size='small'
-                    onClick={() => { }}
+                    onClick={() => setCurrentId(post._id)}
                 >
                     <MoreHorizIcon fontSize='medium' />
                 </Button>
@@ -47,10 +47,17 @@ const Post = ({ post }) => {
                 </Typography>
             </div>
 
+            <Typography
+                variant='h5'
+                className={classes.title}
+                gutterBottom
+            >
+                {post.title}
+            </Typography>
+
             <CardContent>
                 <Typography
-                    variant='h5'
-                    className={classes.title}
+                    variant='h6'
                     gutterBottom
                 >
                     {post.message}
