@@ -25,7 +25,7 @@ const Posts = () => {
                     {posts.map((post) => (
                         <Grid
                             item
-                            key={post.id}
+                            key={post._id}
                             xs={12}
                             sm={6}
                         >

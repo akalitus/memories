@@ -9,7 +9,7 @@ import moment from 'moment';
 const Post = ({ post }) => {
     const classes = useStyles();
 
-    console.log(post.tags)
+    console.log(post.selectedFile)
 
     return (
         <Card className={classes.card}>

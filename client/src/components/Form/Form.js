@@ -72,10 +72,7 @@ const Form = () => {
                     fullWidth
                     value={postData.tags}
                     placeholder='Separate tags with spaces'
-                    onChange={(event) => {
-                        const arr =
-                            setPostData({ ...postData, tags: event.target.value })
-                    }}
+                    onChange={(event) => setPostData({ ...postData, tags: event.target.value })}
                 />
 
                 <div className={classes.fileInput}>
