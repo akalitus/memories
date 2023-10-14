@@ -5,17 +5,16 @@ import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import moment from 'moment';
+import noImagePost from '../../assets/images/no-image-post.png';
 
 const Post = ({ post }) => {
     const classes = useStyles();
-
-    console.log(post.selectedFile)
 
     return (
         <Card className={classes.card}>
             <CardMedia
                 className={classes.media}
-                image={post.selectedFile}
+                image={post.selectedFile || noImagePost}
                 title={post.title}
             />
 
