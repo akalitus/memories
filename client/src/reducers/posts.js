@@ -11,5 +11,8 @@ export default (posts = [], action) => {
             : post
         );
     }
+    if (action.type === 'DELETE') {
+        return posts.filter((post) => post._id !== action.payload);
+    }
     return posts;
 }
