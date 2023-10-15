@@ -6,13 +6,23 @@ import useStyles from './styles';
 import { Avatar, Paper, Typography, Button, Grid, Container } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOpenOutlined'
 import Input from './Input';
-import { GoogleLogin, googleLogout } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
+import { signin, signup } from '../../actions/auth';
+
+const initialState = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+}
 
 const Auth = () => {
     const classes = useStyles();
     const [isSignup, setIsSignup] = useState(false);
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [formWidth, setFormWidth] = useState(0);
+    const [formData, setFormData] = useState(initialState);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -34,11 +44,21 @@ const Auth = () => {
 
     useEffect(() => {
         setFormWidth(formRef.current.offsetWidth);
-    }, [formRef.current]);
+    }, []);
 
-    const handleSubmit = () => { }
+    const handleSubmit = (event) => {
+        event.preventDefault();
 
-    const handleChange = () => { }
+        if (isSignup) {
+            dispatch(signup(formData, navigate))
+        } else {
+            dispatch(signin(formData, navigate))
+        }
+    }
+
+    const handleChange = (event) => {
+        setFormData({ ...formData, [event.target.name]: event.target.value });
+    }
 
     const handleShowPassword = () => {
         setIsPasswordShown(!isPasswordShown)
@@ -58,11 +78,10 @@ const Auth = () => {
             type: 'user',
             name: name,
             image: picture,
-            token: response.credential,
         }
 
         try {
-            dispatch({ type: 'AUTH', data: { ...userData } });
+            dispatch({ type: 'AUTH', data: { ...userData, token: response.credential, } });
 
             navigate('/');
         } catch (error) {
@@ -113,14 +132,14 @@ const Auth = () => {
                                 <Input
                                     name='firstName'
                                     label='First Name'
-                                    onChange={handleChange}
+                                    handleChange={handleChange}
                                     autoFocus
                                     isHalf
                                 />
                                 <Input
                                     name='lastName'
                                     label='Last Name'
-                                    onChange={handleChange}
+                                    handleChange={handleChange}
                                     isHalf
                                 />
                             </>
@@ -129,14 +148,14 @@ const Auth = () => {
                         <Input
                             name='email'
                             label='Email'
-                            onChange={handleChange}
+                            handleChange={handleChange}
                             type='email'
                         />
 
                         <Input
                             name='password'
                             label='Password'
-                            onChange={handleChange}
+                            handleChange={handleChange}
                             type={
                                 isPasswordShown
                                     ? 'text'

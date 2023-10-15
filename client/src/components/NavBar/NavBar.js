@@ -20,7 +20,7 @@ const NavBar = () => {
     }
 
     useEffect(() => {
-        const token = user?.token;
+        // const token = user?.token;
 
         setUser(JSON.parse(localStorage.getItem('profile')))
     }, [location])
@@ -47,17 +47,17 @@ const NavBar = () => {
                         <div className={classes.profile}>
                             <Avatar
                                 className={classes.purple}
-                                alt={user.name}
-                                src={user.image}
+                                alt={user.data.name}
+                                src={user.data.image}
                             >
-                                {user.name.charAt(0)}
+                                {user.data.name.charAt(0)}
                             </Avatar>
 
                             <Typography
                                 className={classes.name}
                                 variant='h6'
                             >
-                                {user.name}
+                                {user.data.name}
                             </Typography>
 
                             <Button

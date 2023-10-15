@@ -1,8 +1,12 @@
 import axios from 'axios';
 import { apiUrl } from '../constants/apiUrl';
+const API = axios.create({ baseURL: apiUrl });
 
-export const fetchPosts = () => axios.get(apiUrl);
-export const createPost = (newPost) => axios.post(apiUrl, newPost);
-export const updatePost = (id, updatedPost) => axios.patch(`${apiUrl}/${id}`, updatedPost);
-export const likePost = (id) => axios.patch(`${apiUrl}/${id}/likes`);
-export const deletePost = (id) => axios.delete(`${apiUrl}/${id}`);
+export const fetchPosts = () => API.get('/posts');
+export const createPost = (newPost) => API.post('/posts', newPost);
+export const updatePost = (id, updatedPost) => API.patch(`/posts/${id}`, updatedPost);
+export const likePost = (id) => API.patch(`/posts/${id}/likes`);
+export const deletePost = (id) => API.delete(`/posts/${id}`);
+
+export const signin = (formData) => API.post('/users/signin', formData);
+export const signup = (formData) => API.post('/users/signup', formData);
