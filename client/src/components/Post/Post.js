@@ -23,7 +23,7 @@ const Post = ({ post, setCurrentId }) => {
 
             <div className={classes.overlay}>
                 <Typography variant='h6'>
-                    {post.creator}
+                    {post.name}
                 </Typography>
 
                 <Typography variant='body2'>
@@ -78,7 +78,7 @@ const Post = ({ post, setCurrentId }) => {
                     &nbsp;
                     Like
                     &nbsp;
-                    {post.likeCount}
+                    {post.likes.length}
                 </Button>
 
                 <Button

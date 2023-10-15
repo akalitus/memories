@@ -81,7 +81,7 @@ const Auth = () => {
         }
 
         try {
-            dispatch({ type: 'AUTH', data: { ...userData, token: response.credential, } });
+            dispatch({ type: 'AUTH', data: { data: { ...userData }, token: response.credential, } });
 
             navigate('/');
         } catch (error) {

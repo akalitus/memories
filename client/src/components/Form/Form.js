@@ -12,12 +12,13 @@ const Form = ({ currentId, setCurrentId }) => {
         : null);
 
     const [postData, setPostData] = useState({
-        creator: '',
         title: '',
         message: '',
         tags: '',
         selectedFile: '',
     })
+
+    const user = JSON.parse(localStorage.getItem('profile'));
 
     const dispatch = useDispatch();
 
@@ -26,7 +27,6 @@ const Form = ({ currentId, setCurrentId }) => {
             post
                 ? { ...post, tags: post.tags.join(' ') }
                 : {
-                    creator: '',
                     title: '',
                     message: '',
                     tags: '',
@@ -38,7 +38,6 @@ const Form = ({ currentId, setCurrentId }) => {
     const resetForm = () => {
         setCurrentId(null);
         setPostData({
-            creator: '',
             title: '',
             message: '',
             tags: '',
@@ -52,11 +51,26 @@ const Form = ({ currentId, setCurrentId }) => {
         const tagsArr = postData.tags.split(' ');
 
         if (currentId) {
-            dispatch(updatePost(currentId, { ...postData, tags: tagsArr }));
+            dispatch(updatePost(currentId, { ...postData, name: user?.data?.name, tags: tagsArr }));
         } else {
-            dispatch(createPost({ ...postData, tags: tagsArr }));
+            dispatch(createPost({ ...postData, name: user?.data?.name, tags: tagsArr }));
         }
         resetForm();
+    }
+
+    if (!user?.data?.name) {
+        return (
+            <Paper
+                className={classes.paper}
+            >
+                <Typography
+                    variant='h6'
+                    align='center'
+                >
+                    Please Sign In to create your memories
+                </Typography>
+            </Paper>
+        )
     }
 
     return (
@@ -72,16 +86,6 @@ const Form = ({ currentId, setCurrentId }) => {
                     {' '}
                     a Memory
                 </Typography>
-
-                <TextField
-                    name='creator'
-                    variant='outlined'
-                    label='Creator'
-                    fullWidth
-                    value={postData.creator}
-                    required
-                    onChange={(event) => setPostData({ ...postData, creator: event.target.value })}
-                />
 
                 <TextField
                     name='title'
