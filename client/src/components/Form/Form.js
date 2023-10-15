@@ -22,7 +22,17 @@ const Form = ({ currentId, setCurrentId }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (post) setPostData({ ...post, tags: post.tags.join(' ') })
+        setPostData(
+            post
+                ? { ...post, tags: post.tags.join(' ') }
+                : {
+                    creator: '',
+                    title: '',
+                    message: '',
+                    tags: '',
+                    selectedFile: '',
+                }
+        )
     }, [post]);
 
     const resetForm = () => {
@@ -69,6 +79,7 @@ const Form = ({ currentId, setCurrentId }) => {
                     label='Creator'
                     fullWidth
                     value={postData.creator}
+                    required
                     onChange={(event) => setPostData({ ...postData, creator: event.target.value })}
                 />
 
@@ -78,6 +89,7 @@ const Form = ({ currentId, setCurrentId }) => {
                     label='Title'
                     fullWidth
                     value={postData.title}
+                    required
                     onChange={(event) => setPostData({ ...postData, title: event.target.value })}
                 />
 
@@ -87,6 +99,7 @@ const Form = ({ currentId, setCurrentId }) => {
                     label='Message'
                     fullWidth
                     value={postData.message}
+                    required
                     onChange={(event) => setPostData({ ...postData, message: event.target.value })}
                 />
 
@@ -104,6 +117,7 @@ const Form = ({ currentId, setCurrentId }) => {
                     <FileBase
                         type='file'
                         multiply={false}
+                        required
                         onDone={({ base64 }) => setPostData({ ...postData, selectedFile: base64 })}
                     />
                 </div>

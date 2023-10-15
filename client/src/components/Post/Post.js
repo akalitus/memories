@@ -72,7 +72,8 @@ const Post = ({ post, setCurrentId }) => {
                 <Button
                     size='small'
                     color='primary'
-                    onClick={() => dispatch(likePost(post._id))}>
+                    onClick={() => dispatch(likePost(post._id))}
+                >
                     <ThumbUpAltIcon fontSize='small' />
                     &nbsp;
                     Like
@@ -83,7 +84,11 @@ const Post = ({ post, setCurrentId }) => {
                 <Button
                     size='small'
                     color='primary'
-                    onClick={() => dispatch(deletePost(post._id))}>
+                    onClick={() => {
+                        dispatch(deletePost(post._id));
+                        setCurrentId(null)
+                    }}
+                >
                     <DeleteIcon fontSize='small' />
                     &nbsp;
                     Delete
