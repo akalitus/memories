@@ -53,7 +53,7 @@ const Form = ({ currentId, setCurrentId }) => {
         if (currentId) {
             dispatch(updatePost(currentId, { ...postData, name: user?.data?.name, tags: tagsArr }));
         } else {
-            dispatch(createPost({ ...postData, name: user?.data?.name, tags: tagsArr }));
+            dispatch(createPost({ ...postData, name: user?.data?.name, creator: user?.data?._id, tags: tagsArr }));
         }
         resetForm();
     }

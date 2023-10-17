@@ -8,11 +8,11 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GOOGLE_API_TOKEN } from './constants/authToken';
 
 const App = () => {
-
+    
     return (
         <GoogleOAuthProvider
             clientId={GOOGLE_API_TOKEN}
-        >
+                    >
             <BrowserRouter>
                 <Container maxWidth='lg'>
                     <NavBar />

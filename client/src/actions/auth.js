@@ -8,7 +8,7 @@ export const signin = (formData, navigate) => async (dispatch) => {
         if (response?.data) {
             const { data } = response;
             dispatch({ type: AUTH, data });
-
+            
             navigate('/');
         }
     } catch (error) {

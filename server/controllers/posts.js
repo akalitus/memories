@@ -18,9 +18,11 @@ export const getPosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
     const post = req.body;
-    const newPost = new PostMessage({ ...post, creator: req.userId, cretedAt: new Date().toISOString() });
-
-    console.log(req.userId)
+    const newPost = new PostMessage({
+        ...post,
+        creator: req.userId,
+        cretedAt: new Date().toISOString()
+    });
 
     try {
         await newPost.save();
@@ -44,7 +46,14 @@ export const updatePost = async (req, res) => {
             .send(responseData.postNotFound(id));
     }
 
-    const updatedPost = { creator, title, message, tags, selectedFile, _id: id };
+    const updatedPost = {
+        creator,
+        title,
+        message,
+        tags,
+        selectedFile,
+        _id: id
+    };
 
     try {
         await PostMessage.findByIdAndUpdate(
@@ -95,7 +104,7 @@ export const likePost = async (req, res) => {
             .status(200)
             .json(updatedPost);
 
-            console.log({message: `user ${req.userId} liked post ${id}`})
+        console.log({ message: `user ${req.userId} liked post ${id}` })
     } catch (error) {
         res
             .status(409)

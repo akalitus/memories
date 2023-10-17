@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import useStyles from './styles';
 import { AppBar, Avatar, Button, Toolbar, Typography } from '@material-ui/core';
 import memories from '../../assets/images/memories.png';
+import decode from 'jwt-decode';
 
 const NavBar = () => {
     const dispatch = useDispatch();
@@ -12,15 +13,26 @@ const NavBar = () => {
     const classes = useStyles();
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 
-    const logout = () => {
+    const logout = useCallback(() => {
         dispatch({ type: 'LOGOUT' });
-
         setUser(null);
         navigate('/');
-    }
+    }, [dispatch, navigate]);
+
+    const isTokenExpired = useCallback(() => {
+        const token = user?.token;
+
+        if (token) {
+            const decodedToken = decode(token);
+            return decodedToken.exp * 1000 < new Date().getTime();
+        }
+        return false;
+    }, [user]);
 
     useEffect(() => {
-        const token = user?.token;
+        if (isTokenExpired()) {
+            logout();
+        }
 
         setUser(JSON.parse(localStorage.getItem('profile')))
     }, [location])
