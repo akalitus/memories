@@ -12,23 +12,32 @@ const Form = ({ currentId, setCurrentId }) => {
         : null);
 
     const [postData, setPostData] = useState({
-        creator: '',
         title: '',
         message: '',
         tags: '',
         selectedFile: '',
     })
 
+    const user = JSON.parse(localStorage.getItem('profile'));
+
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (post) setPostData({ ...post, tags: post.tags.join(' ') })
+        setPostData(
+            post
+                ? { ...post, tags: post.tags.join(' ') }
+                : {
+                    title: '',
+                    message: '',
+                    tags: '',
+                    selectedFile: '',
+                }
+        )
     }, [post]);
 
     const resetForm = () => {
         setCurrentId(null);
         setPostData({
-            creator: '',
             title: '',
             message: '',
             tags: '',
@@ -42,11 +51,26 @@ const Form = ({ currentId, setCurrentId }) => {
         const tagsArr = postData.tags.split(' ');
 
         if (currentId) {
-            dispatch(updatePost(currentId, { ...postData, tags: tagsArr }));
+            dispatch(updatePost(currentId, { ...postData, name: user?.data?.name, tags: tagsArr }));
         } else {
-            dispatch(createPost({ ...postData, tags: tagsArr }));
+            dispatch(createPost({ ...postData, name: user?.data?.name, creator: user?.data?._id, tags: tagsArr }));
         }
         resetForm();
+    }
+
+    if (!user?.data?.name) {
+        return (
+            <Paper
+                className={classes.paper}
+            >
+                <Typography
+                    variant='h6'
+                    align='center'
+                >
+                    Please Sign In to create your memories
+                </Typography>
+            </Paper>
+        )
     }
 
     return (
@@ -64,20 +88,12 @@ const Form = ({ currentId, setCurrentId }) => {
                 </Typography>
 
                 <TextField
-                    name='creator'
-                    variant='outlined'
-                    label='Creator'
-                    fullWidth
-                    value={postData.creator}
-                    onChange={(event) => setPostData({ ...postData, creator: event.target.value })}
-                />
-
-                <TextField
                     name='title'
                     variant='outlined'
                     label='Title'
                     fullWidth
                     value={postData.title}
+                    required
                     onChange={(event) => setPostData({ ...postData, title: event.target.value })}
                 />
 
@@ -87,6 +103,7 @@ const Form = ({ currentId, setCurrentId }) => {
                     label='Message'
                     fullWidth
                     value={postData.message}
+                    required
                     onChange={(event) => setPostData({ ...postData, message: event.target.value })}
                 />
 
@@ -104,6 +121,7 @@ const Form = ({ currentId, setCurrentId }) => {
                     <FileBase
                         type='file'
                         multiply={false}
+                        required
                         onDone={({ base64 }) => setPostData({ ...postData, selectedFile: base64 })}
                     />
                 </div>
